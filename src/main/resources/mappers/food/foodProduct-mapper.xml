@@ -3,9 +3,57 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="FoodProductMapper">
+	<resultMap type="FoodProduct" id="FoodProductMap">
+		<id property="fProductId" column="F_PRODUCT_ID"/>
+		<result property="fProductName" 	column="F_PRODUCT_NAME"/>
+		<result property="fProductCompany" 	column="F_PRODUCT_COMPANY"/>
+		<result property="fProductPrice" 	column="F_PRODUCT_PRICE"/>
+		<result property="fProductSimple" 	column="F_PRODUCT_SIMPLE"/>
+		<result property="fProductDetail" 	column="F_PRODUCT_DETAIL"/>
+		<result property="fProductType" 	column="F_PRODUCT_TYPE"/>
+		<result property="fProductInfo" 	column="F_PRODUCT_INFO"/>
+		<result property="fProductDate" 	column="F_PRODUCT_DATE"/>
+	</resultMap>
+	<resultMap type="FoodProductFile" id="FoodProductFileMap">
+		<result property="refFProductId" 		column="REF_F_PRODUCT_ID"/>
+		<result property="fProductFileorder" 	column="F_PRODUCT_FILEORDER"/>
+		<result property="fProductFilename" 	column="F_PRODUCT_FILENAME"/>
+		<result property="fProductFilerename" 	column="F_PRODUCT_FILERENAME"/>
+		<result property="fProductFilepath" 	column="F_PRODUCT_FILEPATH"/>
+	</resultMap>	
+	<resultMap type="FoodProductPhotoRev" id="FoodProductPhotoRevMap">
+		<id property="fProductRevId" 			column="F_P_REV_ID"/>
+		<result property="fUserId" 				column="F_USER_ID"/>
+		<result property="fProductRevTitle" 	column="F_P_REV_TITLE"/>
+		<result property="fProductRevContent" 	column="F_P_REV_CONTENT"/>
+		<result property="fProductRevStar" 		column="F_P_REV_STAR"/>
+		<result property="fProductRevCDate" 	column="F_P_REV_CDATE"/>
+		<result property="fProductRevUDate" 	column="F_P_REV_UDATE"/>
+		<result property="refFProductId" 		column="REF_F_PRODUCT_ID"/>
+	</resultMap>	
+	<resultMap type="FoodProductPhotoRevFile" id="FoodProductPhotoRevFileMap">
+		<id property="refFProductRevId" 			column="REF_F_P_REV_ID"/>
+		<result property="fProductRevFileno" 		column="F_P_REV_FILE_NO"/>
+		<result property="fProductRevFilename" 		column="F_P_REV_FILENAME"/>
+		<result property="fProductRevFilerename"	column="F_P_REV_FILERENAME"/>
+		<result property="fProductRevFilepath" 		column="F_P_REV_FILEPATH"/>
+	</resultMap>
+	<resultMap type="FoodProductOneRev" id="FoodProductOneRevMap">
+		<result property="fProductOneRevWriter"		column="F_ONE_REVIEW_WRITER"/>
+		<result property="fProductOneRevNo" 		column="F_ONE_REVIEW_NO"/>
+		<result property="fProductOneRevContent" 	column="F_ONE_REVIEW_CONTENT"/>
+		<result property="fProductOneRevStar" 		column="F_ONE_REVIEW_STAR"/>
+		<result property="fProductOneRevCDate" 		column="F_ONE_REVIEW_CDATE"/>
+		<result property="fProductOneRevUDate" 		column="F_ONE_REVIEW_UDATE"/>
+		<result property="refFProductId" 			column="REF_F_PRODUCT_ID"/>
+	</resultMap>
+
+
+
+
 	
 	<insert id="insertProductInfo">
-		INSERT INTO F_PRODUCT_TBL VALUES(SEQ_F_PRODUCT_ID.NEXTVAL, #{fProductName}, #{fProductCompany}, #{fProductPrice}, #{fProductSimple}, #{fProductDetail}, #{fProductType}, #{fProductInfo}, DEFAULT, 0)
+		INSERT INTO F_PRODUCT_TBL VALUES(SEQ_F_PRODUCT_ID.NEXTVAL, #{fProductName}, #{fProductCompany}, #{fProductPrice}, #{fProductSimple}, #{fProductDetail}, #{fProductType}, #{fProductInfo}, DEFAULT)
 	</insert>
 		
 	<insert id="insertProductFiles" parameterType="java.util.List">
@@ -16,5 +64,97 @@
 		</foreach>
 		SELECT 1 FROM DUAL
 	</insert>
+
+	<insert id="insertPhotoRevInfo">
+		INSERT INTO F_P_REV_TBL VALUES(SEQ_F_P_REV_ID.NEXTVAL, #{fUserId},#{fProductRevTitle},#{fProductRevContent},#{fProductRevStar},DEFAULT,DEFAULT,#{refFProductId})
+	</insert>
 	
+	<insert id="insertPhotoRevFiles" parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="file" separator=" ">
+		  INTO F_P_REV_FILE_TBL (REF_F_P_REV_ID, F_P_REV_FILE_NO, F_P_REV_FILENAME, F_P_REV_FILERENAME, F_P_REV_FILEPATH)
+		  VALUES (#{file.refFProductRevId}, #{file.fProductRevFileno}, #{file.fProductRevFilename}, #{file.fProductRevFilerename}, #{file.fProductRevFilepath})
+		</foreach>
+		SELECT 1 FROM DUAL
+	</insert>
+	<insert id="oneReviewRegister">
+		INSERT INTO F_PRODUCT_O_REV_TBL VALUES(#{fProductOneRevWriter},SEQ_P_ONE_REV_NO.NEXTVAL,#{fProductOneRevContent},#{fProductOneRevStar},DEFAULT,DEFAULT,#{refFProductId})
+	</insert>
+
+
+	<update id="modifyProductInfo">
+		UPDATE F_PRODUCT_TBL SET F_PRODUCT_NAME=#{fProductName}, F_PRODUCT_COMPANY=#{fProductCompany}, F_PRODUCT_PRICE=#{fProductPrice},F_PRODUCT_SIMPLE= #{fProductSimple}, F_PRODUCT_DETAIL=#{fProductDetail}, F_PRODUCT_TYPE=#{fProductType}, F_PRODUCT_INFO=#{fProductInfo} WHERE F_PRODUCT_ID=#{fProductId}
+	</update>
+
+	<update id="modifyProductFiles" parameterType="java.util.List">
+	    <foreach collection="list" item="item" separator=";">
+	        UPDATE F_PRODUCT_FILE_TBL
+	        SET F_PRODUCT_FILENAME = #{item.fProductFilename},
+	            F_PRODUCT_FILERENAME = #{item.fProductFilerename},
+	            F_PRODUCT_FILEPATH = #{item.fProductFilepath}
+	        WHERE REF_F_PRODUCT_ID = #{item.refFProductId}
+	          AND F_PRODUCT_FILEORDER = #{item.fProductFileorder}
+	    </foreach>
+	</update>	
+	
+	<delete id="deleteProduct">
+		DELETE FROM F_PRODUCT_TBL WHERE F_PRODUCT_ID=#{fProductId}
+	</delete>
+	<delete id="photoRevDelete">
+		DELETE FROM F_P_REV_TBL WHERE F_P_REV_ID=#{fProductRevId} AND REF_F_PRODUCT_ID=#{fProductId}
+	</delete>
+	<delete id="oneRevDelete">
+		DELETE FROM F_PRODUCT_ONE_REV_TBL WHERE F_ONE_REVIEW_NO=#{fProductOneRevNo} AND REF_F_PRODUCT_ID=#{refFProductId}
+	</delete>
+
+	
+	
+	<select id="selectProductInfoList" resultMap="FoodProductMap">
+		SELECT * FROM F_PRODUCT_TBL ORDER BY F_PRODUCT_ID ASC
+	</select>
+	
+	<select id="selectProductFileList" resultMap="FoodProductFileMap">
+		SELECT * FROM F_PRODUCT_FILE_TBL ORDER BY REF_F_PRODUCT_ID ASC
+	</select>
+
+	<select id="selectProductInfoListByCategory" resultMap="FoodProductMap">
+		SELECT * FROM F_PRODUCT_TBL WHERE F_PRODUCT_TYPE = #{category} ORDER BY F_PRODUCT_ID ASC		
+	</select>
+	
+
+	<select id="selectDetailInfoByFProdcutId" resultMap="FoodProductMap">
+		SELECT * FROM F_PRODUCT_TBL WHERE F_PRODUCT_ID=#{fProductId}
+	</select>
+
+	<select id="selectDetailFileByRefFProductId" resultMap="FoodProductFileMap">
+		SELECT * FROM F_PRODUCT_FILE_TBL WHERE REF_F_PRODUCT_ID=#{refFProductId}
+	</select>
+	<select id="selectPhotoRevList" resultMap="FoodProductPhotoRevMap">
+		SELECT * FROM F_P_REV_TBL WHERE REF_F_PRODUCT_ID = #{fProductId} ORDER BY REF_F_PRODUCT_ID ASC
+	</select>
+	<select id="selectPhotoRevFileList" resultMap="FoodProductPhotoRevFileMap">
+		SELECT * FROM F_P_REV_FILE_TBL ORDER BY REF_F_P_REV_ID ASC
+	</select>
+	
+	<select id="selectOneRevList" resultMap="FoodProductOneRevMap">
+		SELECT * FROM F_PRODUCT_O_REV_TBL WHERE REF_F_PRODUCT_ID=#{fProductId } ORDER BY F_ONE_REVIEW_NO ASC
+	</select>
+	
+	
+		
+	<select id="getCurrentProductId" resultType="int">
+	    SELECT SEQ_F_PRODUCT_ID.CURRVAL FROM DUAL
+	</select>
+	<select id="getCurrentFProductRevId" resultType="int">
+	    SELECT SEQ_F_P_REV_ID.CURRVAL FROM DUAL
+	</select>	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM F_PRODUCT_TBL
+	</select>
+	<select id="getRevListCount" resultType="_int">
+		SELECT COUNT(*) FROM F_P_REV_TBL
+	</select>	
+	<select id="selectListCountByCategory" resultType="_int">
+		SELECT COUNT(*) FROM F_PRODUCT_TBL WHERE F_PRODUCT_TYPE = #{category}
+	</select>	
 </mapper>  

@@ -42,11 +42,13 @@
 					</div>
 					<div id="product_item2">
 						<!-- 작성자와 별점 표시 -->
-						<span>아이디: ${review.FPPhotoRev.fUserId}</span> <span>제목:
-							${review.FPPhotoRev.fProductRevTitle}</span> <span>${review.FPPhotoRev.fProductRevStar}</span><br>
+						<span>아이디: ${review.FPPhotoRev.fUserId}</span> 
+						<span>제목: ${review.FPPhotoRev.fProductRevTitle}</span> 
+						<span>${review.FPPhotoRev.fProductRevStar}</span><br>
 						<br> <br>
 						<!-- 리뷰 내용 표시 -->
 						<p>${review.FPPhotoRev.fProductRevContent}</p>
+						<button onclick="deleteReview(${review.FPPhotoRev.fProductRevId},${review.FPPhotoRev.refFProductId },${review.FPPhotoRev.fUserId })">리뷰 삭제</button>
 					</div>
 				</div>
 			</c:forEach>
@@ -109,8 +111,9 @@
 				<colgroup>
 					<col width="5%">
 					<col width="10%">
-					<col width="75%">
+					<col width="60%">
 					<col width="10%">
+					<col width="15%">
 				</colgroup>
 				<thead>
 					<tr>
@@ -118,6 +121,7 @@
 						<th>작성자</th>
 						<th>한줄리뷰</th>
 						<th>별점</th>
+						<th>삭제</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -127,6 +131,7 @@
 							<td>${oneReview.fProductOneRevWriter}</td>
 							<td>${oneReview.fProductOneRevContent}</td>
 							<td>${oneReview.fProductOneRevStar}</td>
+							<td><button onclick="deleteOneReview(${oneReview.fProductOneRevNo},${oneReview.fProductOneRevWriter},${oneReview.refFProductId })"></button></td>
 						</tr>
 					</c:forEach>
 					 
@@ -134,5 +139,29 @@
 			</table>
 		</section>
 	</main>
+	
+	<script>
+	//클릭해도 반응을 안함..
+	function deleteReview(fProductRevId,fProductId,fUserId) {
+	    var deleteUrl = '/foodProduct/deletePhotoRev.do?fProductRevId=' + fProductRevId + '&fProductId=' + fProductId;	   
+	    var userId = '<%= (String)session.getAttribute("userId") %>';	    
+	    // 삭제 요청 실행
+		if (userId === fUserId) {
+		        window.location.href = deleteUrl;
+		    } else {
+		        alert("본인 작성리뷰만 삭제 가능합니다!");
+		    }		
+	}
+	
+	function deleteOneReview(revNo,revWriter,refId){
+		 var deleteUrl = '/foodProduct/deleteOneRev.do?No=' + revNo + '&refId='+refId;
+		 var userId = '<%= (String)session.getAttribute("userId") %>';
+			if (userId === revWriter) {
+		        window.location.href = deleteUrl;
+		    } else {
+		        alert("본인 작성리뷰만 삭제 가능합니다!");
+		    }			
+	}
+	</script>	
 </body>
 </html>

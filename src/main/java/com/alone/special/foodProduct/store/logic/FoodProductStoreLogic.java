@@ -152,6 +152,24 @@ public class FoodProductStoreLogic implements FoodProductStore{
 		return result;		
 	}
 
+	@Override
+	public int deleteProduct(SqlSession session, int fProductId) {
+		int result = session.delete("FoodProductMapper.deleteProduct", fProductId);
+		return result;
+	}
+
+	@Override
+	public int photoRevDelete(SqlSession session, FoodProductPhotoRev fPPhotoRev) {
+		int result = session.delete("FoodProductMapper.photoRevDelete", fPPhotoRev);
+		return result;
+	}
+
+	@Override
+	public int oneRevDelete(SqlSession session, FoodProductOneRev fPOneRev) {
+		int result = session.delete("FoodProductMapper.oneRevDelete", fPOneRev);
+		return result;
+	}
+
 
 
 

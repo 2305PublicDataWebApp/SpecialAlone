@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>추천식당 포토리뷰 파일등록폼</title>
+		<title>추천식당 리뷰 파일등록폼</title>
 		<link rel="stylesheet" href="/resources/css/common/footer.css">
         <link rel="stylesheet" href="/resources/css/common/header.css">
         <link rel="stylesheet" href="/resources/css/common/reset.css">
@@ -18,16 +18,11 @@
          <!-- main -->
             <main>
             <section>
-                <h2>${fProductCompany }</h2>
-                <h3>${fProductName }</h3>    
+                <h2>${fDinerType }</h2>
+                <h3>${fDinerName }</h3>    
                 <h1>포토리뷰 이미지등록</h1><br><hr><br>            
             <br><br>
-            <form action="/foodProduct/photorevfilereg.do" method="POST" enctype="multipart/form-data">
-            	
-            	<!-- <input type="hidden" name="fProductId" value="${fProductId }">
-            		포토리뷰 파일등록하고 해당상세리스트로 보내려고 이걸 써서 fProductId를 컨트롤러로 넘기고 RequestParam으로 받으려고
-            		시도했는데 RequestParam으로 fProductId를 받으면 파일도 안들어가고 에러발생 400에러 일단 전체상품리스트로 넘김
-            	 -->
+            <form action="/diner/revFileReg.do" method="POST" enctype="multipart/form-data">            	
                 <input type="submit" value="파일등록">
                 <br><br><br>
                 <div id="image-file-container">

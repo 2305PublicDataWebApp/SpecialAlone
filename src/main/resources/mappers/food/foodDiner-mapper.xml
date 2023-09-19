@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FoodDinerMapper">
+	<resultMap type="Diner" id="DinerMap">
+		<id property="fDinerId" column="F_DINER_ID"/>
+		<result property="fDinerName" 	column="F_DINER_NAME"/>
+		<result property="fDinerAddress" 	column="F_DINER_ADDRESS"/>
+		<result property="fDinerParking" 	column="F_DINER_PARKING"/>
+		<result property="fDinerPhone" 	column="F_DINER_PHONE"/>
+		<result property="fDinerBHour" 	column="F_DINER_BHOUR"/>
+		<result property="fDinerType" 	column="F_DINER_TYPE"/>
+		<result property="fDinerNote" 	column="F_DINER_NOTE"/>
+		<result property="fDinerDate" 	column="F_DINER_DATE"/>
+	</resultMap>
+	<resultMap type="DinerFile" id="DinerFileMap">
+		<id property="refFDinerId" 			column="REF_F_DINER_ID"/>
+		<result property="fDinerFileorder" 	column="F_DINER_FILEORDER"/>
+		<result property="fDinerFilename" 	column="F_DINER_FILENAME"/>
+		<result property="fDinerFilerename" 	column="F_DINER_FILERENAME"/>
+		<result property="fDinerFilepath" 	column="F_DINER_FILEPATH"/>
+		<result property="fDinerFiletype" 	column="F_DINER_FILETYPE"/>		
+	</resultMap>
+
+	<insert id="insertDinerInfo">
+		INSERT INTO F_DINER_TBL VALUES(SEQ_F_DINER_ID.NEXTVAL, #{fDinerName}, #{fDinerAddress}, #{fDinerParking}, #{fDinerPhone}, #{fDinerBHour}, #{fDinerType}, #{fDinerNote}, DEFAULT)
+	</insert>
+	<insert id="insertDinerFiles" parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="file" separator=" ">
+		  INTO F_DINER_FILE_TBL (REF_F_DINER_ID, F_DINER_FILEORDER, F_DINER_FILENAME, F_DINER_FILERENAME, F_DINER_FILEPATH, F_DINER_FILETYPE)
+		  VALUES (#{file.refFDinerId}, #{file.fDinerFileorder}, #{file.fDinerFilename}, #{file.fDinerFilerename}, #{file.fDinerFilepath}, #{file.fDinerFiletype})
+		</foreach>
+		SELECT 1 FROM DUAL
+	</insert>
+	<insert id="insertRevInfo">
+		INSERT INTO F_DINER_REV_TBL VALUES(SEQ_F_DINER_REV_ID.NEXTVAL, #{fDinerRevTitle},#{fDinerRevContent},#{fDinerRevStar},DEFAULT,DEFAULT,#{refFDinerId},#{fUserId})
+	</insert>
+	<insert id="insertRevFiles" parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="file" separator=" ">
+		  INTO F_DINER_REV_FILE_TBL (REF_F_DINER_REV_ID, F_DINER_REV_FILEORDER, F_DINER_REV_FILENAME, F_DINER_REV_FILERENAME, F_DINER_REV_FILEPATH)
+		  VALUES (#{file.refFDinerId}, #{file.fDinerRevFileorder}, #{file.fDinerRevFilename}, #{file.fDinerRevFilerename}, #{file.fDinerRevFilepath})
+		</foreach>
+		SELECT 1 FROM DUAL
+	</insert>
+
+	<select id="getCurrentFDinerRevId" resultType="int">
+	    SELECT SEQ_F_DINER_ID.CURRVAL FROM DUAL
+	</select>
+	
+	<select id="selectDinerFileList" resultMap="DinerFileMap">
+		SELECT * FROM F_DINER_FILE_TBL ORDER BY REF_F_DINER_ID ASC
+	</select>
+	<select id="selectDinerInfoList" resultMap="DinerMap">
+		SELECT * FROM F_DINER_TBL ORDER BY F_DINER_ID ASC		
+	</select>
+	<select id="selectDinerInfoListByRegion" resultMap="DinerMap">
+		SELECT * FROM F_DINER_TBL WHERE F_DINER_TYPE = #{region} ORDER BY F_DINER_ID ASC			
+	</select>
+	<select id="selectDetailInfoByFDinerId" resultMap="DinerMap">
+		SELECT * FROM F_DINER_TBL WHERE F_DINER_ID=#{fDinerId}
+	</select>
+	<select id="selectDetailFileByRefDinerId" resultMap="DinerFileMap">
+		SELECT * FROM F_DINER_FILE_TBL WHERE REF_F_DINER_ID=#{refFDinerId} ORDER BY F_DINER_FILETYPE DESC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM F_DINER_TBL
+	</select>	
+	<select id="selectListCountByRegion" resultType="_int">
+		SELECT COUNT(*) FROM F_DINER_TBL WHERE F_DINER_TYPE = #{region}
+	</select>					
+	<select id="getCurrentDinerId" resultType="int">
+		SELECT SEQ_F_DINER_ID.CURRVAL FROM DUAL
+	</select>
+</mapper>  

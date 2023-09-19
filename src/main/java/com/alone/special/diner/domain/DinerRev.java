@@ -4,10 +4,9 @@ import java.sql.Timestamp;
 
 public class DinerRev {
 	private int fDinerRevId;
-	private int fDinerRevNo;
 	private String fDinerRevTitle;
 	private String fDinerRevContent;
-	private int fDinerRevStar;
+	private float fDinerRevStar;
 	private Timestamp fDinerRevCDate;
 	private Timestamp fDinerRevUDate;
 	private int refFDinerId;
@@ -17,12 +16,6 @@ public class DinerRev {
 	}
 	public void setfDinerRevId(int fDinerRevId) {
 		this.fDinerRevId = fDinerRevId;
-	}
-	public int getfDinerRevNo() {
-		return fDinerRevNo;
-	}
-	public void setfDinerRevNo(int fDinerRevNo) {
-		this.fDinerRevNo = fDinerRevNo;
 	}
 	public String getfDinerRevTitle() {
 		return fDinerRevTitle;
@@ -36,10 +29,10 @@ public class DinerRev {
 	public void setfDinerRevContent(String fDinerRevContent) {
 		this.fDinerRevContent = fDinerRevContent;
 	}
-	public int getfDinerRevStar() {
+	public float getfDinerRevStar() {
 		return fDinerRevStar;
 	}
-	public void setfDinerRevStar(int fDinerRevStar) {
+	public void setfDinerRevStar(float fDinerRevStar) {
 		this.fDinerRevStar = fDinerRevStar;
 	}
 	public Timestamp getfDinerRevCDate() {
@@ -69,8 +62,7 @@ public class DinerRev {
 	}
 	@Override
 	public String toString() {
-		return "DinerRev [fDinerRevId=" + fDinerRevId + ", fDinerRevNo=" + fDinerRevNo + ", fDinerRevTitle="
-				+ fDinerRevTitle + ", fDinerRevContent=" + fDinerRevContent + ", fDinerRevStar=" + fDinerRevStar
+		return "DinerRev [fDinerRevId=" + fDinerRevId + ", fDinerRevNo=" +  fDinerRevTitle + ", fDinerRevContent=" + fDinerRevContent + ", fDinerRevStar=" + fDinerRevStar
 				+ ", fDinerRevCDate=" + fDinerRevCDate + ", fDinerRevUDate=" + fDinerRevUDate + ", refFDinerId="
 				+ refFDinerId + ", fUserId=" + fUserId + "]";
 	}

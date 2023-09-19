@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.alone.special.diner.domain.Diner;
 import com.alone.special.diner.domain.DinerFile;
 import com.alone.special.diner.domain.DinerRev;
+import com.alone.special.diner.domain.DinerRevFile;
 import com.alone.special.foodProduct.domain.PageInfo;
 
 public interface DinerStore {
@@ -34,6 +35,8 @@ public interface DinerStore {
 	int insertRevInfo(SqlSession session, DinerRev dinerRev);
 
 	int getCurrentFDinerRevId(SqlSession session);
+
+	int insertRevFiles(SqlSession session, List<DinerRevFile> dRevList);
 
 
 

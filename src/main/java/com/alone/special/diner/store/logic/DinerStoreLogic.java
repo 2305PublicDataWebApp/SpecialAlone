@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.alone.special.diner.domain.Diner;
 import com.alone.special.diner.domain.DinerFile;
 import com.alone.special.diner.domain.DinerRev;
+import com.alone.special.diner.domain.DinerRevFile;
 import com.alone.special.diner.store.DinerStore;
 import com.alone.special.foodProduct.domain.FoodProduct;
 import com.alone.special.foodProduct.domain.FoodProductFile;
@@ -97,6 +98,14 @@ public class DinerStoreLogic implements DinerStore{
 	public int getCurrentFDinerRevId(SqlSession session) {
 		int currentFDinerRevId = session.selectOne("FoodDinerMapper.getCurrentFDinerRevId"); // 실제 시퀀스 값을 가져오는 코드가 필요합니다.
         return currentFDinerRevId;
+	}
+
+	@Override
+	public int insertRevFiles(SqlSession session, List<DinerRevFile> dRevList) {
+		Map<String,Object> params = new HashMap<>();
+		params.put("list", dRevList);
+		int result = session.insert("FoodDinerMapper.insertDinerFiles", params);
+		return result;
 	}
 
 

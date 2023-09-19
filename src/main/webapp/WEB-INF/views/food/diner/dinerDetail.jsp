@@ -17,9 +17,11 @@
          <!-- main -->
         <main>
             <section>                
-                <h1>상품 상세정보</h1><br><hr><br>                 
+                <h1>상품 상세정보</h1><br><hr><br>
+                                 
                 <h2>${diner.fDinerType }</h2>
                 <h3>${diner.fDinerName }</h3>
+				<a href="/diner/showRevInfoRegForm.do?fDinerId=${diner.fDinerId}">리뷰 작성</a>
                 <br>       
                 <br><br>
                 <div id="product_list_first" class="product_list">
@@ -92,14 +94,6 @@
         </main>   
          <!-- footer -->
             <jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
-      </div>
-      <script>
-		function toReviewList(fdinerId) {
-		    // 리뷰 목록 페이지 URL을 생성하고 상품 ID를 쿼리 문자열로 추가
-		    var url = '/diner/showrevlist.do?fDinerId=' + fdinerId;		
-		    // 새로운 URL로 이동
-		    window.location.href = url;
-		}
-		</script>		
+      </div>	
 	</body>
 </html>

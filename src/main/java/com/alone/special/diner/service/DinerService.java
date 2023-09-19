@@ -5,6 +5,7 @@ import java.util.List;
 import com.alone.special.diner.domain.Diner;
 import com.alone.special.diner.domain.DinerFile;
 import com.alone.special.diner.domain.DinerRev;
+import com.alone.special.diner.domain.DinerRevFile;
 import com.alone.special.foodProduct.domain.PageInfo;
 
 public interface DinerService {
@@ -32,6 +33,8 @@ public interface DinerService {
 	int insertRevInfo(DinerRev dinerRev);
 
 	int getCurrentFDinerRevId();
+
+	int insertRevFiles(List<DinerRevFile> dRevList);
 
 
 }

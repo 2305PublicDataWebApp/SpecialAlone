@@ -18,6 +18,7 @@
         <main>
             <section>                
                 <h1>상품 상세정보</h1><br><hr><br>
+                <button onclick="deleteProduct(${foodProduct.fProductId})">상품정보 삭제</button>  
                 <button onclick="toModifyForm(${foodProduct.fProductId})">상품정보 수정</button>                 
                 <h2>${foodProduct.fProductCompany }</h2>
                 <h3>${foodProduct.fProductName }</h3>
@@ -89,6 +90,15 @@
 		    // 새로운 URL로 이동
 		    window.location.href = url;
 		}		
+		function deleteProduct(fProductId){
+			var confirmation = confirm("상품 정보를 삭제하시겠습니까?");
+			if(confirmation){
+				var url = '/foodProduct/deleteProduct.do?fProductId=' + fProductId;
+				window.location.href = url;				
+			}else{
+				return;
+			}			
+		}
 		</script>		
 	</body>
 </html>

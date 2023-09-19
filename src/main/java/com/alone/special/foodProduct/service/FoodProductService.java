@@ -51,6 +51,12 @@ public interface FoodProductService {
 
 	int modifyProductFiles(List<FoodProductFile> fList);
 
+	int deleteProduct(int fProductId);
+
+	int photoRevDelete(FoodProductPhotoRev fPPhotoRev);
+
+	int oneRevDelete(FoodProductOneRev fPOneRev);
+
 
 
 	

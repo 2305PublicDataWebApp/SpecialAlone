@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.alone.special.diner.domain.Diner;
 import com.alone.special.diner.domain.DinerFile;
 import com.alone.special.diner.domain.DinerRev;
+import com.alone.special.diner.domain.DinerRevFile;
 import com.alone.special.diner.service.DinerService;
 import com.alone.special.diner.store.DinerStore;
 import com.alone.special.foodProduct.domain.PageInfo;
@@ -89,6 +90,12 @@ public class DinerServiceImpl implements DinerService{
 	@Override
 	public int getCurrentFDinerRevId() {
 		return FDStore.getCurrentFDinerRevId(session);
+	}
+
+	@Override
+	public int insertRevFiles(List<DinerRevFile> dRevList) {
+		int result = FDStore.insertRevFiles(session,dRevList);
+		return result;
 	}
 
 

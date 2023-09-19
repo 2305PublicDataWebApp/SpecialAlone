@@ -111,11 +111,8 @@ public class FoodProductController {
 	@RequestMapping(value="/foodProduct/photoRevInfoRegister.do", method=RequestMethod.GET)
 	public ModelAndView showPhotoRevInfoRegisterForm(ModelAndView mv
 			,@RequestParam("fProductId") int fProductId) {
-		System.out.println(fProductId);
 		FoodProduct foodProduct = FPService.selectDetailInfoByFProductId(fProductId);
-		System.out.println(foodProduct);
 		mv.addObject("foodProduct", foodProduct);
-		mv.addObject("fProductId", fProductId);
 		mv.setViewName("food/foodRecommend/productPhotoRevInfoReg");
 		return mv;
 	}	
@@ -282,6 +279,31 @@ public class FoodProductController {
 		return mv;
 	}
 
+	// 추천상품 삭제(연관 파일,리뷰 모두삭제)
+	@RequestMapping(value="/foodProduct/deleteProduct.do", method=RequestMethod.GET)
+	public ModelAndView deleteProduct(ModelAndView mv
+			,@RequestParam("fProductId") int fProductId) {
+		try {
+			int result = FPService.deleteProduct(fProductId);
+				if(result>0) {
+					mv.setViewName("redirect:/foodProduct/list.do");
+				}else {
+					mv.addObject("msg", "추천상품 삭제가 완료되지 않았습니다");
+					mv.addObject("error", "추천상품 삭제 실패");
+					mv.addObject("url", "/foodProduct/list.do");
+					mv.setViewName("common/errorPage");
+				}			
+			} catch (Exception e) {
+			mv.addObject("msg", "게시글 등록이 완료되지 않았습니다");
+			mv.addObject("error", e.getMessage());
+			mv.addObject("url", "/foodProduct/list.do");
+			mv.setViewName("common/errorPage");			
+		}		
+		return mv;
+	}
+	
+	
+	
 	// 추천상품 정보수정
 	@RequestMapping(value="/foodProduct/modifyInfo.do", method=RequestMethod.POST)
 	public ModelAndView productInfoModify(ModelAndView mv
@@ -480,8 +502,7 @@ public class FoodProductController {
 
 	// 포토리뷰 파일등록
 	@RequestMapping(value="/foodProduct/photorevfilereg.do", method=RequestMethod.POST)
-	public ModelAndView photoRevFileRegister(ModelAndView mv
-			,@ModelAttribute FoodProduct fProduct
+	public ModelAndView photoRevFileRegister(ModelAndView mv			
 			,@RequestParam(value="revImageName1", required=false) MultipartFile image1
 			,@RequestParam(value="revImageName2", required=false) MultipartFile image2
 			,HttpServletRequest request
@@ -517,7 +538,7 @@ public class FoodProductController {
 			
 			if(result == 2) {
 				// 리스트로 이동 해야함
-				mv.setViewName("redirect:/foodProduct/revlist.do?fProductId="+ fProduct.getfProductId());
+				mv.setViewName("redirect:/foodProduct/list.do");
 				/////수정해야함 안넘어옴값
 			}else {
 				// 에러페이지
@@ -536,6 +557,36 @@ public class FoodProductController {
 		return mv;
 	}
 
+	//포토리뷰 삭제
+	@RequestMapping(value="/foodProduct/deletePhotoRev.do", method=RequestMethod.GET)
+	public ModelAndView photoRevDelete(ModelAndView mv
+			,@RequestParam("fProductRevId") int fProductRevId
+			,@RequestParam("fProductId") int fProductId			
+			,HttpSession session) {
+		try {
+				FoodProductPhotoRev FPPhotoRev = new FoodProductPhotoRev();
+				FPPhotoRev.setfProductRevId(fProductRevId);
+				FPPhotoRev.setRefFProductId(fProductId);
+				int result =FPService.photoRevDelete(FPPhotoRev);		
+				if(result>0) {
+					mv.setViewName("redirect:/foodProduct/revlist.do?fProductId=" + fProductId);					
+				}else {
+					mv.addObject("msg", "리뷰삭제가 완료되지 않았습니다");
+					mv.addObject("error", "리뷰삭제 실패");
+					mv.addObject("url", "redirect:/index.jsp");
+					mv.setViewName("common/errorPage");					
+				}			
+		} catch (Exception e) {
+			mv.addObject("msg", "리뷰삭제 에러");
+			mv.addObject("error", e.getMessage());
+			mv.addObject("url", "redirect:/index.jsp");
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	
+	
 	// 한줄리뷰 등록
 	@RequestMapping(value="/foodProduct/submitReview.do", method=RequestMethod.POST)
 	public ModelAndView oneReviewRegister(ModelAndView mv
@@ -563,7 +614,34 @@ public class FoodProductController {
 		return mv;
 	}
 	
-	
+	//한줄리뷰 삭제
+	@RequestMapping(value="/foodProduct/deleteOneRev.do", method=RequestMethod.GET)
+	public ModelAndView oneRevDelete(ModelAndView mv
+			,@RequestParam("No") int fOneRevNo
+			,@RequestParam("refId") int refId
+			,HttpSession session) {
+		try {
+				FoodProductOneRev fPOneRev= new FoodProductOneRev();
+				fPOneRev.setRefFProductId(refId);
+				fPOneRev.setfProductOneRevNo(fOneRevNo);
+				int result =FPService.oneRevDelete(fPOneRev);		
+				if(result>0) {
+					mv.setViewName("redirect:/foodProduct/list.do");					
+				}else {
+					mv.addObject("msg", "리뷰삭제가 완료되지 않았습니다");
+					mv.addObject("error", "리뷰삭제 실패");
+					mv.addObject("url", "redirect:/index.jsp");
+					mv.setViewName("common/errorPage");					
+				}			
+		} catch (Exception e) {
+			mv.addObject("msg", "리뷰삭제 에러");
+			mv.addObject("error", e.getMessage());
+			mv.addObject("url", "redirect:/index.jsp");
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}	
 	
 	
 	

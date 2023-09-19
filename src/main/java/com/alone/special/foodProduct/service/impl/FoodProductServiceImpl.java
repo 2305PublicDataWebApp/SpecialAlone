@@ -145,6 +145,24 @@ public class FoodProductServiceImpl implements FoodProductService{
 		return result;
 	}
 
+	@Override
+	public int deleteProduct(int fProductId) {
+		int result = FPStore.deleteProduct(session,fProductId);
+		return result;
+	}
+
+	@Override
+	public int photoRevDelete(FoodProductPhotoRev fPPhotoRev) {
+		int result = FPStore.photoRevDelete(session,fPPhotoRev);
+		return result;
+	}
+
+	@Override
+	public int oneRevDelete(FoodProductOneRev fPOneRev) {
+		int result = FPStore.oneRevDelete(session,fPOneRev);
+		return result;
+	}
+
 
 
 
