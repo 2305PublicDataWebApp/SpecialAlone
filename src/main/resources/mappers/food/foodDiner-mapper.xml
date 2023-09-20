@@ -22,7 +22,23 @@
 		<result property="fDinerFilepath" 	column="F_DINER_FILEPATH"/>
 		<result property="fDinerFiletype" 	column="F_DINER_FILETYPE"/>		
 	</resultMap>
-
+	<resultMap type="DinerRev" id="DinerRevMap">
+		<id property="fDinerRevId" column="F_DINER_REV_ID"/>
+		<result property="fDinerRevTitle" column="F_DINER_REV_TILE"/>
+		<result property="fDinerRevContent" column="F_DINER_REV_CONTENT"/>
+		<result property="fDinerRevStar" column="F_DINER_REV_STAR"/>
+		<result property="fDinerRevCDate" column="F_DINER_REV_CDATE"/>
+		<result property="fDinerRevUDate" column="F_DINER_REV_UDATE"/>
+		<result property="refFDinerId" column="REF_F_DINER_ID"/>
+		<result property="fUserId" column="F_USER_ID"/>
+	</resultMap>
+	<resultMap type="DinerRevFile" id="DinerRevFileMap">
+		<result property="refFDinerRevId" column="REF_F_DINER_REV_ID"/>
+		<result property="fDinerRevFileorder" column="F_DINER_REV_FILEORDER"/>
+		<result property="fDinerRevFilename" column="F_DINER_REV_FILENAME"/>
+		<result property="fDinerRevFilerename" column="F_DINER_REV_FILERENAME"/>
+		<result property="fDinerRevFilepath" column="F_DINER_REV_FILEPATH"/>
+	</resultMap>	
 	<insert id="insertDinerInfo">
 		INSERT INTO F_DINER_TBL VALUES(SEQ_F_DINER_ID.NEXTVAL, #{fDinerName}, #{fDinerAddress}, #{fDinerParking}, #{fDinerPhone}, #{fDinerBHour}, #{fDinerType}, #{fDinerNote}, DEFAULT)
 	</insert>
@@ -47,7 +63,7 @@
 	</insert>
 
 	<select id="getCurrentFDinerRevId" resultType="int">
-	    SELECT SEQ_F_DINER_ID.CURRVAL FROM DUAL
+	    SELECT SEQ_F_DINER_REV_ID.CURRVAL FROM DUAL
 	</select>
 	
 	<select id="selectDinerFileList" resultMap="DinerFileMap">
@@ -66,8 +82,12 @@
 		SELECT * FROM F_DINER_FILE_TBL WHERE REF_F_DINER_ID=#{refFDinerId} ORDER BY F_DINER_FILETYPE DESC
 	</select>
 	
-	
-	
+	<select id="selectRevListByFdinerId" resultMap="DinerRevMap">
+		SELECT * FROM F_DINER_REV_TBL WHERE REF_F_DINER_ID=#{fDinerId}
+	</select>
+	<select id="selectRevFileList" resultMap="DinerRevFileMap">
+		SELECT * FROM F_DINER_REV_FILE_TBL ORDER BY REF_F_DINER_REV_ID ASC
+	</select>	
 	
 	
 	
@@ -78,6 +98,9 @@
 	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*) FROM F_DINER_TBL
+	</select>
+	<select id="getRevListCount" resultType="_int">
+		SELECT COUNT(*) FROM F_DINER_REV_TBL
 	</select>	
 	<select id="selectListCountByRegion" resultType="_int">
 		SELECT COUNT(*) FROM F_DINER_TBL WHERE F_DINER_TYPE = #{region}

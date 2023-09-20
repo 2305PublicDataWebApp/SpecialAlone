@@ -38,6 +38,12 @@ public interface DinerStore {
 
 	int insertRevFiles(SqlSession session, List<DinerRevFile> dRevList);
 
+	int getRevListCount(SqlSession session);
+
+	List<DinerRev> selectRevListByFdinerId(SqlSession session, PageInfo pInfo, int fDinerId);
+
+	List<DinerRevFile> selectRevFileList(SqlSession session);
+
 
 
 }

@@ -11,7 +11,7 @@
 		<h2>${requestScope.msg }</h2>
 		<script>
 			alert("${requestScope.msg}");
-			location.href = "${url}";
+
 		</script>
 	</body>
 </html>

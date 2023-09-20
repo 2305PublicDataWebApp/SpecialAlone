@@ -20,7 +20,9 @@
 		<typeAlias type="com.alone.special.foodProduct.domain.FoodProductPhotoRevFile" alias="FoodProductPhotoRevFile"/>
 		<typeAlias type="com.alone.special.foodProduct.domain.FoodProductOneRev" alias="FoodProductOneRev"/>
 		<typeAlias type="com.alone.special.diner.domain.Diner" alias="Diner"/>
-		<typeAlias type="com.alone.special.diner.domain.DinerFile" alias="DinerFile"/>	
+		<typeAlias type="com.alone.special.diner.domain.DinerFile" alias="DinerFile"/>
+		<typeAlias type="com.alone.special.diner.domain.DinerRev" alias="DinerRev"/>
+		<typeAlias type="com.alone.special.diner.domain.DinerRevFile" alias="DinerRevFile"/>			
 		<typeAlias type="com.alone.special.user.domain.User" alias="User"/>	
 	</typeAliases>
 	

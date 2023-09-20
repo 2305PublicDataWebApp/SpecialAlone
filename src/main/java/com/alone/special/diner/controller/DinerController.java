@@ -25,9 +25,14 @@ import com.alone.special.diner.domain.Diner;
 import com.alone.special.diner.domain.DinerFile;
 import com.alone.special.diner.domain.DinerRev;
 import com.alone.special.diner.domain.DinerRevFile;
+import com.alone.special.diner.domain.DinerRevSet;
 import com.alone.special.diner.domain.DinerSet;
 import com.alone.special.diner.service.DinerService;
 import com.alone.special.foodProduct.domain.FoodProduct;
+import com.alone.special.foodProduct.domain.FoodProductOneRev;
+import com.alone.special.foodProduct.domain.FoodProductPhotoRev;
+import com.alone.special.foodProduct.domain.FoodProductPhotoRevFile;
+import com.alone.special.foodProduct.domain.FoodProductRevSet;
 import com.alone.special.foodProduct.domain.PageInfo;
 
 
@@ -311,6 +316,7 @@ public class DinerController {
 				    dRevList.add(dRevFile);
 				}
 			}
+			System.out.println(dRevList);
 	        int result = FDService.insertRevFiles(dRevList);
 			
 			if(result == 2) {
@@ -324,9 +330,9 @@ public class DinerController {
 				mv.setViewName("common/errorPage");
 			}
 		} catch (Exception e) {
-			mv.addObject("msg", "게시글 등록이 완료되지 않았습니다");
+			mv.addObject("msg", e.getMessage());
 			mv.addObject("error", e.getMessage());
-			mv.addObject("url", "/diner/list.do");
+			
 			mv.setViewName("common/errorPage");
 		}
 		
@@ -385,6 +391,40 @@ public class DinerController {
 	}
 	
 
+	// 추천식당 리뷰목록 조회
+	@RequestMapping(value = "/diner/revList.do", method = RequestMethod.GET)
+	public ModelAndView showDinerRevList(
+	        ModelAndView mv,
+	        @RequestParam(value = "fDinerId") int fDinerId
+	        ,@RequestParam(value = "page", required = false, defaultValue = "1") Integer currentPage) {
+	    try {
+	    	// fDinerId 쿼리스트링으로 받아옴
+			Diner diner = FDService.selectDetailInfoByFDinerId(fDinerId);
+			mv.addObject("diner", diner);	    	
+	        Integer totalCount;
+	        totalCount = FDService.getRevListCount();
+	        PageInfo pInfo = this.getPageInfo(currentPage, totalCount,5);	        
+	        List<DinerRev> dRevList;
+	        List<DinerRevFile> dRevFileList;
+	        dRevList = FDService.selectRevListByFdinerId(fDinerId,pInfo);	        	        
+	        dRevFileList = FDService.selectRevFileList();
+	        // 리뷰 세트 목록을 생성합니다.
+	        List<DinerRevSet> dinerRevSetList = createPhotoRevSets(fPRevInfoList, fPRevFileList);
+	        mv.addObject("foodProductRevSetList", foodProductRevSetList);
+	        mv.addObject("fPOneRevList", fPOneRevList);
+	        mv.addObject("pInfo", pInfo);
+	        mv.setViewName("food/foodRecommend/productRevList");
+	    } catch (Exception e) {
+	        // 예외 처리 로직 추가
+	        mv.addObject("msg", "상품목록 불러오기 실패");
+	        mv.addObject("error", e.getMessage());
+	        mv.addObject("url", "/foodProduct/list.do");
+	        mv.setViewName("common/errorPage"); // 에러 페이지로 리다이렉트 또는 예외 처리
+	    }
+	    return mv;
+	}	
+	
+	
 	// 상품 상세정보 조회
 	@RequestMapping(value="/diner/dinerDetail.do", method=RequestMethod.GET)
 	public ModelAndView showDinerDetail(ModelAndView mv
@@ -458,7 +498,21 @@ public class DinerController {
 	    return dinerSetList;
 	}	
 	
-	
+	private List<DinerRevSet> createDinerRevSets(List<DinerRev> dRevList, List<DinerRevFile> dRevFileList) {
+	    List<DinerRevSet> dinerRevSetList = new ArrayList<>();
+	    for (DinerRev dinerRev : dRevList) {
+	    	DinerRevSet dinerRevSet = new DinerRevSet();
+	    	dinerRevSet.setDinerRev(dinerRev);	
+	        List<DinerRevFile> dinerRevFile = new ArrayList<>();
+	        for(DinerRevFile dRevFile : dRevFileList) {
+	        	if(dRevFile.getRefFDinerId() == dinerRev.getfDinerRevId())
+	        }
+	    	
+	    	
+	        dinerRevSetList.add(dinerRevSet);
+	    }
+	    return dinerSetList;
+	}		
 	
 	
 	

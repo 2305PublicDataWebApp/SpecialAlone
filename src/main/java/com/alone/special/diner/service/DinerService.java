@@ -36,5 +36,11 @@ public interface DinerService {
 
 	int insertRevFiles(List<DinerRevFile> dRevList);
 
+	Integer getRevListCount();
+
+	List<DinerRev> selectRevListByFdinerId(int fDinerId, PageInfo pInfo);
+
+	List<DinerRevFile> selectRevFileList();
+
 
 }

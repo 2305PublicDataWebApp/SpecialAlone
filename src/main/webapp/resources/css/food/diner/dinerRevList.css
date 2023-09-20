@@ -9,6 +9,10 @@ h1 {
 	font-size: 2em;
 }
 
+main {
+	margin-left: 20%;
+	margin-right: 20%;
+}
 
 .btn1 {
 	padding: 10px;
@@ -53,7 +57,8 @@ h1 {
 
 .product_item {
 	border: 1px solid black;
-	width: 100%;
+	width: 60%;
+	display: flex;
 }
 
 .image_thumbnail {
@@ -91,4 +96,22 @@ img {
 	border: 1px solid black;
 	height: 200px;
 	text-align: center;
+}
+
+#starRating {
+	float: right;
+}
+
+table {
+	border: 1px solid black;
+	width: 100%;
+	text-align: center;
+}
+
+tr th {
+	border: 1px solid black;
+}
+
+tr td {
+	border: 1px solid black;
 }

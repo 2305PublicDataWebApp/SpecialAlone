@@ -251,7 +251,7 @@ public class FoodProductController {
 	    return mv;
 	}	
 
-	// 추천상품 등록
+	// 추천상품 정보등록
 	@RequestMapping(value="/foodProduct/register.do", method=RequestMethod.POST)
 	public ModelAndView productInfoRegister(ModelAndView mv
 			,@ModelAttribute FoodProduct fProduct

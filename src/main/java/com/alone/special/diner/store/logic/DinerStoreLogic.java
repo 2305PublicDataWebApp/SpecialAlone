@@ -41,6 +41,14 @@ public class DinerStoreLogic implements DinerStore{
 	}
 
 	@Override
+	public int insertRevFiles(SqlSession session, List<DinerRevFile> dRevList) {
+		Map<String,Object> params = new HashMap<>();
+		params.put("list", dRevList);
+		int result = session.insert("FoodDinerMapper.insertRevFiles", params);
+		return result;
+	}
+
+	@Override
 	public int selectListCount(SqlSession session) {
 		int result = session.selectOne("FoodDinerMapper.selectListCount");
 		return result;
@@ -101,11 +109,24 @@ public class DinerStoreLogic implements DinerStore{
 	}
 
 	@Override
-	public int insertRevFiles(SqlSession session, List<DinerRevFile> dRevList) {
-		Map<String,Object> params = new HashMap<>();
-		params.put("list", dRevList);
-		int result = session.insert("FoodDinerMapper.insertDinerFiles", params);
+	public int getRevListCount(SqlSession session) {
+		int result = session.selectOne("FoodDinerMapper.getRevListCount");
 		return result;
+	}
+
+	@Override
+	public List<DinerRev> selectRevListByFdinerId(SqlSession session, PageInfo pInfo, int fDinerId) {
+		int limit = pInfo.getRecordCountPerPage();
+		int offset = (pInfo.getCurrentPage()-1)*limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		List<DinerRev> dRevList = session.selectList("FoodDinerMapper.selectRevListByFdinerId", fDinerId, rowBounds);
+		return dRevList;
+	}
+
+	@Override
+	public List<DinerRevFile> selectRevFileList(SqlSession session) {
+		List<DinerRevFile> dRevFileList = session.selectList("FoodDinerMapper.selectRevFileList");
+		return dRevFileList;
 	}
 
 

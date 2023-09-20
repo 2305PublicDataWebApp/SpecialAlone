@@ -98,6 +98,24 @@ public class DinerServiceImpl implements DinerService{
 		return result;
 	}
 
+	@Override
+	public Integer getRevListCount() {	
+		int result = FDStore.getRevListCount(session);
+		return result;
+	}
+
+	@Override
+	public List<DinerRev> selectRevListByFdinerId(int fDinerId, PageInfo pInfo) {
+		List<DinerRev> dRevList = FDStore.selectRevListByFdinerId(session,pInfo,fDinerId);
+		return dRevList;
+	}
+
+	@Override
+	public List<DinerRevFile> selectRevFileList() {
+		List<DinerRevFile> dRevFileList = FDStore.selectRevFileList(session);
+		return dRevFileList;
+	}
+
 
 
 }
