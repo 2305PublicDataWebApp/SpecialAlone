@@ -24,7 +24,7 @@
 	</resultMap>
 	<resultMap type="DinerRev" id="DinerRevMap">
 		<id property="fDinerRevId" column="F_DINER_REV_ID"/>
-		<result property="fDinerRevTitle" column="F_DINER_REV_TILE"/>
+		<result property="fDinerRevTitle" column="F_DINER_REV_TITLE"/>
 		<result property="fDinerRevContent" column="F_DINER_REV_CONTENT"/>
 		<result property="fDinerRevStar" column="F_DINER_REV_STAR"/>
 		<result property="fDinerRevCDate" column="F_DINER_REV_CDATE"/>
@@ -85,6 +85,7 @@
 	<select id="selectRevListByFdinerId" resultMap="DinerRevMap">
 		SELECT * FROM F_DINER_REV_TBL WHERE REF_F_DINER_ID=#{fDinerId}
 	</select>
+	
 	<select id="selectRevFileList" resultMap="DinerRevFileMap">
 		SELECT * FROM F_DINER_REV_FILE_TBL ORDER BY REF_F_DINER_REV_ID ASC
 	</select>	

@@ -54,6 +54,7 @@
                         <h2>대표리뷰</h2> <br><br>
                         <p>리뷰내용</p>
                         <!-- 리뷰 가지고오기 -->
+                        <button onclick="toReviewList(${diner.fDinerId})">리뷰로 이동</button>
                     </div>
                 </div>
                 <br><br>
@@ -95,5 +96,13 @@
          <!-- footer -->
             <jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
       </div>	
+	<script>
+	function toReviewList(fDinerId) {
+	    // 리뷰 목록 페이지 URL을 생성하고 상품 ID를 쿼리 문자열로 추가
+	    var url = '/diner/revList.do?fDinerId=' + fDinerId;		
+	    // 새로운 URL로 이동
+	    window.location.href = url;
+	}		
+	</script>      
 	</body>
 </html>

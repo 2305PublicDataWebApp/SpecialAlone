@@ -409,16 +409,15 @@ public class DinerController {
 	        dRevList = FDService.selectRevListByFdinerId(fDinerId,pInfo);	        	        
 	        dRevFileList = FDService.selectRevFileList();
 	        // 리뷰 세트 목록을 생성합니다.
-	        List<DinerRevSet> dinerRevSetList = createPhotoRevSets(fPRevInfoList, fPRevFileList);
-	        mv.addObject("foodProductRevSetList", foodProductRevSetList);
-	        mv.addObject("fPOneRevList", fPOneRevList);
+	        List<DinerRevSet> dinerRevSet = createDinerRevSets(dRevList, dRevFileList);
+	        mv.addObject("dinerRevSet", dinerRevSet);
 	        mv.addObject("pInfo", pInfo);
-	        mv.setViewName("food/foodRecommend/productRevList");
+	        mv.setViewName("food/diner/dinerRevList");
 	    } catch (Exception e) {
 	        // 예외 처리 로직 추가
-	        mv.addObject("msg", "상품목록 불러오기 실패");
+	        mv.addObject("msg", "식당리뷰 불러오기 실패");
 	        mv.addObject("error", e.getMessage());
-	        mv.addObject("url", "/foodProduct/list.do");
+	        mv.addObject("url", "/diner/list.do");
 	        mv.setViewName("common/errorPage"); // 에러 페이지로 리다이렉트 또는 예외 처리
 	    }
 	    return mv;
@@ -503,15 +502,17 @@ public class DinerController {
 	    for (DinerRev dinerRev : dRevList) {
 	    	DinerRevSet dinerRevSet = new DinerRevSet();
 	    	dinerRevSet.setDinerRev(dinerRev);	
-	        List<DinerRevFile> dinerRevFile = new ArrayList<>();
+	        List<DinerRevFile> dRevFiles = new ArrayList<>();
 	        for(DinerRevFile dRevFile : dRevFileList) {
-	        	if(dRevFile.getRefFDinerId() == dinerRev.getfDinerRevId())
+	        	if(dRevFile.getRefFDinerId() == dinerRev.getfDinerRevId()) {
+	        		dRevFiles.add(dRevFile);
+	        	}
 	        }
-	    	
-	    	
-	        dinerRevSetList.add(dinerRevSet);
+	    	dinerRevSet.setdRevFileList(dRevFileList);
+	    	dinerRevSetList.add(dinerRevSet);
+	   
 	    }
-	    return dinerSetList;
+	    return dinerRevSetList;
 	}		
 	
 	

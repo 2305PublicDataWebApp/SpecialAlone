@@ -20,120 +20,57 @@
 		<main>
 			<section>
                 <h1>식당 리뷰</h1><br><hr><br>                 
-                <h2>지역</h2>
-                <h3>식당명</h3>
+                <h2>${diner.fDinerType }</h2>
+                <h3>${diner.fDinerName }</h3>
                 <br>       
                 <br><br>
-                <div id="product_list_first" class="product_list">
-                    <div id="product_item1" class="product_item">
-                        <div id="image_container1" class="image_thumbnail">
-                            <img src="../CSS_Basic/images/link.png" alt="">
+			<div class="product_list">
+                <!-- 상품 리스트를 반복하여 출력합니다 -->
+                <c:forEach var="dinerRevSet" items="${dinerRevSet}">
+                    <div class="product_item">
+                        <div class="image_thumbnail">
+                            <img src="${dinerRevSet.dRevFileList[0].fDinerRevFilepath}" alt="${dinerRevSet.dRevFileList[0].fDinerRevFilename}" >
                         </div>
-                        <div id="image_container2" class="image_thumbnail">
-                            <img src="../CSS_Basic/images/link.png" alt="">
+                        <div class="image_thumbnail">
+                            <img src="${dinerRevSet.dRevFileList[1].fDinerRevFilepath}" alt="${dinerRevSet.dRevFileList[1].fDinerRevFilename}" >
                         </div>
+						<div id="product_item2">
+							<!-- 작성자와 별점 표시 -->
+							<span>아이디: ${dinerRevSet.dinerRev.fUserId}</span> 
+							<span>제목: ${dinerRevSet.dinerRev.fDinerRevTitle}</span> 
+							<span>${dinerRevSet.dinerRev.fDinerRevStar}</span><br>
+							<br> <br>
+							<!-- 리뷰 내용 표시 -->
+							<p>${dinerRevSet.dinerRev.fDinerRevContent}</p>							
+						</div>
                     </div>
-                    <div id="product_item2">
-                        <span>아이디: khuser01</span>
-                        <span>★ ★ ★ ★ ★</span><br><br><br>  <!-- 오른쪽으로 붙히기-->
-                        <p>
-                            리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        </p>
-                    </div>
-                </div>
-                <br><br>
-                <div id="product_list_first" class="product_list">
-                    <div id="product_item1" class="product_item">
-                        <div id="image_container1" class="image_thumbnail">
-                            <img src="../CSS_Basic/images/link.png" alt="">
-                        </div>
-                        <div id="image_container2" class="image_thumbnail">
-                            <img src="../CSS_Basic/images/link.png" alt="">
-                        </div>
-                    </div>
-                    <div id="product_item2">
-                        <span>아이디: khuser01</span>
-                        <span>★ ★ ★ ★ ★</span><br><br><br>  <!-- 오른쪽으로 붙히기-->
-                        <p>
-                            리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        </p>
-                    </div>
-                </div>
-                <div id="product_list_first" class="product_list">
-                    <div id="product_item1" class="product_item">
-                        <div id="image_container1" class="image_thumbnail">
-                            <img src="../CSS_Basic/images/link.png" alt="">
-                        </div>
-                        <div id="image_container2" class="image_thumbnail">
-                            <img src="../CSS_Basic/images/link.png" alt="">
-                        </div>
-                    </div>
-                    <div id="product_item2">
-                        <span>아이디: khuser01</span>
-                        <span>★ ★ ★ ★ ★</span><br><br><br>  <!-- 오른쪽으로 붙히기-->
-                        <p>
-                            리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        </p>
-                    </div>
-                </div>
-                <div id="product_list_first" class="product_list">
-                    <div id="product_item1" class="product_item">
-                        <div id="image_container1" class="image_thumbnail">
-                            <img src="../CSS_Basic/images/link.png" alt="">
-                        </div>
-                        <div id="image_container2" class="image_thumbnail">
-                            <img src="../CSS_Basic/images/link.png" alt="">
-                        </div>
-                    </div>
-                    <div id="product_item2">
-                        <span>아이디: khuser01</span>
-                        <span>★ ★ ★ ★ ★</span><br><br><br>  <!-- 오른쪽으로 붙히기-->
-                        <p>
-                            리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        <br>리뷰내용~~~~~~~~~~~~~~~~~~~~~~~
-                        </p>
-                    </div>
-                </div>
-                <br>
-                <div style="text-align: center;">
-                    <span>이전 1  2  3  4  5 다음</span>
-                </div>
+                </c:forEach> 
+              </div>  
                 <br><hr>
                 <br><br>
 				
 			<div class="pagination">
-				<c:if test="${dinerSetList.size() > 0}">
+				<c:if test="${dinerRevSet.size() > 0}">
 				    <ul>
 				        <c:if test="${pInfo.startNavi > 1}">
-				            <li><a href="/diner/list.do?page=1">처음</a></li>
+				            <li><a href="/diner/revList.do?page=1">처음</a></li>
 				        </c:if>
 				        <c:if test="${pInfo.currentPage > 1}">
-				            <li><a href="/diner/list.do?page=${pInfo.currentPage - 1}">이전</a></li>
+				            <li><a href="/diner/revList.do?page=${pInfo.currentPage - 1}">이전</a></li>
 				        </c:if>
 				        <c:forEach begin="${pInfo.startNavi}" end="${pInfo.endNavi}" var="i">
 				            <c:if test="${pInfo.currentPage == i}">
 				                <li class="active"><span>${i}</span></li>
 				            </c:if>
 				            <c:if test="${pInfo.currentPage != i}">
-				                <li><a href="/diner/list.do?page=${i}">${i}</a></li>
+				                <li><a href="/diner/revList.do?page=${i}">${i}</a></li>
 				            </c:if>
 				        </c:forEach>
 				        <c:if test="${pInfo.currentPage < pInfo.naviTotalCount}">
-				            <li><a href="/diner/list.do?page=${pInfo.currentPage + 1}">다음</a></li>
+				            <li><a href="/diner/revList.do?page=${pInfo.currentPage + 1}">다음</a></li>
 				        </c:if>
 				        <c:if test="${pInfo.endNavi < pInfo.naviTotalCount}">
-				            <li><a href="/diner/list.do?page=${pInfo.naviTotalCount}">끝</a></li>
+				            <li><a href="/diner/revList.do?page=${pInfo.naviTotalCount}">끝</a></li>
 				        </c:if>
 				    </ul>
 				</c:if>
