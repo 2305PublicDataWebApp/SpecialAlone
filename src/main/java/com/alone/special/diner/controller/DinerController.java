@@ -408,6 +408,7 @@ public class DinerController {
 	        List<DinerRevFile> dRevFileList;
 	        dRevList = FDService.selectRevListByFdinerId(fDinerId,pInfo);	        	        
 	        dRevFileList = FDService.selectRevFileList();
+	        System.out.println(dRevFileList);
 	        // 리뷰 세트 목록을 생성합니다.
 	        List<DinerRevSet> dinerRevSet = createDinerRevSets(dRevList, dRevFileList);
 	        mv.addObject("dinerRevSet", dinerRevSet);
@@ -415,8 +416,8 @@ public class DinerController {
 	        mv.setViewName("food/diner/dinerRevList");
 	    } catch (Exception e) {
 	        // 예외 처리 로직 추가
-	        mv.addObject("msg", "식당리뷰 불러오기 실패");
-	        mv.addObject("error", e.getMessage());
+	        mv.addObject("msg", e.getMessage());
+	        
 	        mv.addObject("url", "/diner/list.do");
 	        mv.setViewName("common/errorPage"); // 에러 페이지로 리다이렉트 또는 예외 처리
 	    }
@@ -424,6 +425,32 @@ public class DinerController {
 	}	
 	
 	
+	//식당 리뷰 삭제
+	@RequestMapping(value="/diner/deleteDinerRev.do", method=RequestMethod.GET)
+	public ModelAndView revDelete(ModelAndView mv
+			,@RequestParam("fDinerRevId") int fDinerRevId
+			,@RequestParam("refFDinerId") int refFDinerId			
+			,HttpSession session) {
+		try {
+				DinerRev dinerRev = new DinerRev();
+				dinerRev.setfDinerRevId(fDinerRevId);
+				dinerRev.setRefFDinerId(refFDinerId);
+				int result =FDService.deleteRev(dinerRev);		
+				if(result>0) {
+					mv.setViewName("redirect:/diner/revList.do?fDinerId=" + refFDinerId);					
+				}else {
+					mv.addObject("msg", "리뷰삭제가 완료되지 않았습니다");
+					mv.addObject("url", "redirect:/index.jsp");
+					mv.setViewName("common/errorPage");					
+				}			
+		} catch (Exception e) {
+			mv.addObject("msg", e.getMessage());
+			mv.addObject("url", "redirect:/index.jsp");
+			mv.setViewName("common/errorPage");
+		}	
+		return mv;
+	}
+
 	// 상품 상세정보 조회
 	@RequestMapping(value="/diner/dinerDetail.do", method=RequestMethod.GET)
 	public ModelAndView showDinerDetail(ModelAndView mv
@@ -453,29 +480,29 @@ public class DinerController {
 	
 	
 	
+	// 추천식당 삭제(연관 파일,리뷰 모두삭제)
+	@RequestMapping(value="/diner/deleteDiner.do", method=RequestMethod.GET)
+	public ModelAndView deleteDiner(ModelAndView mv
+			,@RequestParam("fDinerId") int fDinerId) {
+		try {
+			int result = FDService.deleteDiner(fDinerId);
+				if(result>0) {
+					mv.setViewName("redirect:/diner/list.do");
+				}else {
+					mv.addObject("msg", "추천상품 삭제가 완료되지 않았습니다");
+					mv.addObject("url", "/diner/list.do");
+					mv.setViewName("common/errorPage");
+				}			
+			} catch (Exception e) {
+			mv.addObject("msg", e.getMessage());
+			mv.addObject("url", "/diner/list.do");
+			mv.setViewName("common/errorPage");			
+		}		
+		return mv;
+	}	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 상품 세트 목록을 생성하는 메서드
+	// 식당 전체 목록 조회를 위한 정보+이미지 세트 생성
 	private List<DinerSet> createDinerSets(List<Diner> dInfoList, List<DinerFile> dFileList) {
 	    List<DinerSet> dinerSetList = new ArrayList<>();
 	    for (Diner diner : dInfoList) {
@@ -497,6 +524,7 @@ public class DinerController {
 	    return dinerSetList;
 	}	
 	
+	// 리뷰 조회를 위한 정보+이미지 세트생성 
 	private List<DinerRevSet> createDinerRevSets(List<DinerRev> dRevList, List<DinerRevFile> dRevFileList) {
 	    List<DinerRevSet> dinerRevSetList = new ArrayList<>();
 	    for (DinerRev dinerRev : dRevList) {
@@ -508,7 +536,7 @@ public class DinerController {
 	        		dRevFiles.add(dRevFile);
 	        	}
 	        }
-	    	dinerRevSet.setdRevFileList(dRevFileList);
+	    	dinerRevSet.setdRevFileList(dRevFiles);
 	    	dinerRevSetList.add(dinerRevSet);
 	   
 	    }

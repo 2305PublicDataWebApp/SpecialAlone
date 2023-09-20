@@ -41,7 +41,8 @@
 							<span>${dinerRevSet.dinerRev.fDinerRevStar}</span><br>
 							<br> <br>
 							<!-- 리뷰 내용 표시 -->
-							<p>${dinerRevSet.dinerRev.fDinerRevContent}</p>							
+							<p>${dinerRevSet.dinerRev.fDinerRevContent}</p>		
+							<button onclick="deleteReview(${dinerRevSet.dinerRev.fDinerRevId},${dinerRevSet.dinerRev.refFDinerId },'${dinerRevSet.dinerRev.fUserId }')">리뷰 삭제</button>					
 						</div>
                     </div>
                 </c:forEach> 
@@ -49,33 +50,34 @@
                 <br><hr>
                 <br><br>
 				
-			<div class="pagination">
-				<c:if test="${dinerRevSet.size() > 0}">
-				    <ul>
-				        <c:if test="${pInfo.startNavi > 1}">
-				            <li><a href="/diner/revList.do?page=1">처음</a></li>
-				        </c:if>
-				        <c:if test="${pInfo.currentPage > 1}">
-				            <li><a href="/diner/revList.do?page=${pInfo.currentPage - 1}">이전</a></li>
-				        </c:if>
-				        <c:forEach begin="${pInfo.startNavi}" end="${pInfo.endNavi}" var="i">
-				            <c:if test="${pInfo.currentPage == i}">
-				                <li class="active"><span>${i}</span></li>
+				<div class="pagination">
+				    <c:if test="${dinerRevSet.size() > 0}">
+				        <ul>
+				            <c:if test="${pInfo.startNavi != 1 }">
+				                <c:url var="prevUrl" value="/diner/revList.do">
+				                    <c:param name="fDinerId" value="${diner.fDinerId}" />
+				                    <c:param name="page" value="${pInfo.startNavi - 1}" />
+				                </c:url>
+				                <a href="${prevUrl }">[이전]</a>
 				            </c:if>
-				            <c:if test="${pInfo.currentPage != i}">
-				                <li><a href="/diner/revList.do?page=${i}">${i}</a></li>
+				            <c:forEach begin="${pInfo.startNavi }" end="${pInfo.endNavi }" var="p">
+				                <c:url var="pageUrl" value="/diner/revList.do">
+				                    <c:param name="fDinerId" value="${diner.fDinerId}" />
+				                    <c:param name="page" value="${p }" />
+				                </c:url>
+				                <a href="${pageUrl }">${p }</a>&nbsp;
+				            </c:forEach>
+				            <c:if test="${pInfo.endNavi != pInfo.naviTotalCount }">
+				                <c:url var="nextUrl" value="/diner/revList.do">
+				                    <c:param name="fDinerId" value="${diner.fDinerId}" />
+				                    <c:param name="page" value="${pInfo.endNavi + 1 }" />
+				                </c:url>
+				                <a href="${nextUrl }">[다음]</a>
 				            </c:if>
-				        </c:forEach>
-				        <c:if test="${pInfo.currentPage < pInfo.naviTotalCount}">
-				            <li><a href="/diner/revList.do?page=${pInfo.currentPage + 1}">다음</a></li>
-				        </c:if>
-				        <c:if test="${pInfo.endNavi < pInfo.naviTotalCount}">
-				            <li><a href="/diner/revList.do?page=${pInfo.naviTotalCount}">끝</a></li>
-				        </c:if>
-				    </ul>
-				</c:if>
-
-			</div>				
+				        </ul>
+				    </c:if>
+				</div>
+			
 				<br>
 				<br>
 				<br>
@@ -86,6 +88,18 @@
 		<!-- footer -->
 		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
 	</div>
-
+	<script>
+		function deleteReview(fDinerRevId,refFDinerId,fUserId) {
+		    var deleteUrl = '/diner/deleteDinerRev.do?fDinerRevId=' + fDinerRevId + '&refFDinerId=' + refFDinerId;
+		    console.log(deleteUrl);
+		    var userId = '<%= (String)session.getAttribute("userId") %>';	    
+		    // 삭제 요청 실행
+			if (userId === fUserId) {
+			        window.location.href = deleteUrl;
+			    } else {
+			        alert("본인 작성리뷰만 삭제 가능합니다!");
+			    }		
+		}
+	</script>
 </body>
 </html>

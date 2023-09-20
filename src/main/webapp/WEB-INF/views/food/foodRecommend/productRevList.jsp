@@ -48,7 +48,7 @@
 						<br> <br>
 						<!-- 리뷰 내용 표시 -->
 						<p>${review.FPPhotoRev.fProductRevContent}</p>
-						<button onclick="deleteReview(${review.FPPhotoRev.fProductRevId},${review.FPPhotoRev.refFProductId },${review.FPPhotoRev.fUserId })">리뷰 삭제</button>
+						<button onclick="deleteReview(${review.FPPhotoRev.fProductRevId},${review.FPPhotoRev.refFProductId },'${review.FPPhotoRev.fUserId }')">리뷰 삭제</button>
 					</div>
 				</div>
 			</c:forEach>
@@ -58,28 +58,27 @@
 				<c:if test="${foodProductRevSetList.size() > 0}">
 				    <ul>
 				        <c:if test="${pInfo.startNavi > 1}">
-				            <li><a href="/foodProduct/revlist.do?fProductId=${foodProduct.fProductId}&page=1">처음</a></li>
+				            <li><a href="/foodProduct/revlist.do?page=1">처음</a></li>
 				        </c:if>
 				        <c:if test="${pInfo.currentPage > 1}">
-				            <li><a href="/foodProduct/revlist.do?fProductId=${foodProduct.fProductId}&page=${pInfo.currentPage - 1}">이전</a></li>
+				            <li><a href="/foodProduct/revlist.do?page=${pInfo.currentPage - 1}">이전</a></li>
 				        </c:if>
 				        <c:forEach begin="${pInfo.startNavi}" end="${pInfo.endNavi}" var="i">
 				            <c:if test="${pInfo.currentPage == i}">
 				                <li class="active"><span>${i}</span></li>
 				            </c:if>
 				            <c:if test="${pInfo.currentPage != i}">
-				                <li><a href="/foodProduct/revlist.do?fProductId=${foodProduct.fProductId}&page=${i}">${i}</a></li>
+				                <li><a href="/foodProduct/revlist.do?page=${i}">${i}</a></li>
 				            </c:if>
 				        </c:forEach>
 				        <c:if test="${pInfo.currentPage < pInfo.naviTotalCount}">
-				            <li><a href="/foodProduct/revlist.do?fProductId=${foodProduct.fProductId}&page=${pInfo.currentPage + 1}">다음</a></li>
+				            <li><a href="/foodProduct/revlist.do?page=${pInfo.currentPage + 1}">다음</a></li>
 				        </c:if>
 				        <c:if test="${pInfo.endNavi < pInfo.naviTotalCount}">
-				            <li><a href="/foodProduct/revlist.do?fProductId=${foodProduct.fProductId}&page=${pInfo.naviTotalCount}">끝</a></li>
+				            <li><a href="/foodProduct/revlist.do?page=${pInfo.naviTotalCount}">끝</a></li>
 				        </c:if>
 				    </ul>
 				</c:if>
-
 			</div>
 			<h2>한줄리뷰</h2>
 			<br> 
@@ -131,7 +130,7 @@
 							<td>${oneReview.fProductOneRevWriter}</td>
 							<td>${oneReview.fProductOneRevContent}</td>
 							<td>${oneReview.fProductOneRevStar}</td>
-							<td><button onclick="deleteOneReview(${oneReview.fProductOneRevNo},${oneReview.fProductOneRevWriter},${oneReview.refFProductId })"></button></td>
+							<td><button onclick="deleteOneReview(${oneReview.fProductOneRevNo},'${oneReview.fProductOneRevWriter}',${oneReview.refFProductId })">삭제</button></td>
 						</tr>
 					</c:forEach>
 					 
@@ -141,7 +140,6 @@
 	</main>
 	
 	<script>
-	//클릭해도 반응을 안함..
 	function deleteReview(fProductRevId,fProductId,fUserId) {
 	    var deleteUrl = '/foodProduct/deletePhotoRev.do?fProductRevId=' + fProductRevId + '&fProductId=' + fProductId;	   
 	    var userId = '<%= (String)session.getAttribute("userId") %>';	    

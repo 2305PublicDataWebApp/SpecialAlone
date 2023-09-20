@@ -101,10 +101,10 @@
 		DELETE FROM F_PRODUCT_TBL WHERE F_PRODUCT_ID=#{fProductId}
 	</delete>
 	<delete id="photoRevDelete">
-		DELETE FROM F_P_REV_TBL WHERE F_P_REV_ID=#{fProductRevId} AND REF_F_PRODUCT_ID=#{fProductId}
+		DELETE FROM F_P_REV_TBL WHERE F_P_REV_ID=#{fProductRevId} AND REF_F_PRODUCT_ID=#{refFProductId}
 	</delete>
 	<delete id="oneRevDelete">
-		DELETE FROM F_PRODUCT_ONE_REV_TBL WHERE F_ONE_REVIEW_NO=#{fProductOneRevNo} AND REF_F_PRODUCT_ID=#{refFProductId}
+		DELETE FROM F_PRODUCT_O_REV_TBL WHERE F_ONE_REVIEW_NO=#{fProductOneRevNo} AND REF_F_PRODUCT_ID=#{refFProductId}
 	</delete>
 
 	

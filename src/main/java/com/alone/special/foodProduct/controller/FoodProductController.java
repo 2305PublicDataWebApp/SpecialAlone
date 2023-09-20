@@ -234,7 +234,6 @@ public class FoodProductController {
 	        fPRevFileList = FPService.selectPhotoRevFileList();
 	        List<FoodProductOneRev> fPOneRevList;
 	        fPOneRevList = FPService.selectOneRevList(fProductId);
-	        System.out.println(fPOneRevList);
 	        // 상품 세트 목록을 생성합니다.
 	        List<FoodProductRevSet> foodProductRevSetList = createPhotoRevSets(fPRevInfoList, fPRevFileList);
 	        mv.addObject("foodProductRevSetList", foodProductRevSetList);
@@ -577,8 +576,7 @@ public class FoodProductController {
 					mv.setViewName("common/errorPage");					
 				}			
 		} catch (Exception e) {
-			mv.addObject("msg", "리뷰삭제 에러");
-			mv.addObject("error", e.getMessage());
+			mv.addObject("msg", e.getMessage());
 			mv.addObject("url", "redirect:/index.jsp");
 			mv.setViewName("common/errorPage");
 		}
@@ -626,7 +624,7 @@ public class FoodProductController {
 				fPOneRev.setfProductOneRevNo(fOneRevNo);
 				int result =FPService.oneRevDelete(fPOneRev);		
 				if(result>0) {
-					mv.setViewName("redirect:/foodProduct/list.do");					
+					mv.setViewName("redirect:/foodProduct/revlist.do?fProductId="+ refId);					
 				}else {
 					mv.addObject("msg", "리뷰삭제가 완료되지 않았습니다");
 					mv.addObject("error", "리뷰삭제 실패");
@@ -634,8 +632,7 @@ public class FoodProductController {
 					mv.setViewName("common/errorPage");					
 				}			
 		} catch (Exception e) {
-			mv.addObject("msg", "리뷰삭제 에러");
-			mv.addObject("error", e.getMessage());
+			mv.addObject("msg", e.getMessage());	
 			mv.addObject("url", "redirect:/index.jsp");
 			mv.setViewName("common/errorPage");
 		}

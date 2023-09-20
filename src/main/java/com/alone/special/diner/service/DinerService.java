@@ -42,5 +42,11 @@ public interface DinerService {
 
 	List<DinerRevFile> selectRevFileList();
 
+	int deleteDiner(int fDinerId);
+
+	int deleteRev(DinerRev dinerRev);
+
+
+
 
 }

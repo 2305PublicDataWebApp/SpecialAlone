@@ -17,10 +17,11 @@
          <!-- main -->
         <main>
             <section>                
-                <h1>상품 상세정보</h1><br><hr><br>
+                <h1>식당 상세정보</h1><br><hr><br>
                                  
                 <h2>${diner.fDinerType }</h2>
                 <h3>${diner.fDinerName }</h3>
+                <button onclick="deleteDiner(${diner.fDinerId})">식당정보 삭제</button>
 				<a href="/diner/showRevInfoRegForm.do?fDinerId=${diner.fDinerId}">리뷰 작성</a>
                 <br>       
                 <br><br>
@@ -102,7 +103,17 @@
 	    var url = '/diner/revList.do?fDinerId=' + fDinerId;		
 	    // 새로운 URL로 이동
 	    window.location.href = url;
-	}		
+	}
+	
+	function deleteDiner(fDinerId){
+		var confirmation = confirm("상품 정보를 삭제하시겠습니까?");
+		if(confirmation){
+			var url = '/diner/deleteDiner.do?fDinerId=' + fDinerId;
+			window.location.href = url;				
+		}else{
+			return;
+		}			
+	}	
 	</script>      
 	</body>
 </html>

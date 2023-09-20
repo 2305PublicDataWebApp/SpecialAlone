@@ -116,6 +116,19 @@ public class DinerServiceImpl implements DinerService{
 		return dRevFileList;
 	}
 
+	@Override
+	public int deleteDiner(int fDinerId) {
+		int result = FDStore.deleteDiner(session,fDinerId);
+		return result;
+	}
+
+	@Override
+	public int deleteRev(DinerRev dinerRev) {
+		int result = FDStore.deleteRev(session,dinerRev);
+		return result;
+	}
+
+
 
 
 }

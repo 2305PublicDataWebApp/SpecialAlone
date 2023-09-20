@@ -33,7 +33,7 @@
 		<result property="fUserId" column="F_USER_ID"/>
 	</resultMap>
 	<resultMap type="DinerRevFile" id="DinerRevFileMap">
-		<result property="refFDinerRevId" column="REF_F_DINER_REV_ID"/>
+		<result property="refFDinerId" column="REF_F_DINER_REV_ID"/>
 		<result property="fDinerRevFileorder" column="F_DINER_REV_FILEORDER"/>
 		<result property="fDinerRevFilename" column="F_DINER_REV_FILENAME"/>
 		<result property="fDinerRevFilerename" column="F_DINER_REV_FILERENAME"/>
@@ -91,7 +91,13 @@
 	</select>	
 	
 	
+	<delete id="deleteDiner">
+		DELETE FROM F_DINER_TBL WHERE F_DINER_ID=#{fDinerId}
+	</delete>
 	
+	<delete id="deleteRev">
+		DELETE FROM F_DINER_REV_TBL WHERE F_DINER_REV_ID=#{fDinerRevId} AND REF_F_DINER_ID=#{refFDinerId}
+	</delete>
 	
 	
 	

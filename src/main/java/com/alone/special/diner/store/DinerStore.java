@@ -44,6 +44,10 @@ public interface DinerStore {
 
 	List<DinerRevFile> selectRevFileList(SqlSession session);
 
+	int deleteDiner(SqlSession session, int fDinerId);
+
+	int deleteRev(SqlSession session, DinerRev dinerRev);
+
 
 
 }

@@ -129,6 +129,18 @@ public class DinerStoreLogic implements DinerStore{
 		return dRevFileList;
 	}
 
+	@Override
+	public int deleteDiner(SqlSession session, int fDinerId) {
+		int result = session.delete("FoodDinerMapper.deleteDiner", fDinerId);
+		return result;
+	}
+
+	@Override
+	public int deleteRev(SqlSession session, DinerRev dinerRev) {
+		int result = session.delete("FoodDinerMapper.deleteRev", dinerRev);
+		return result;
+	}
+
 
 
 }
